@@ -35,4 +35,19 @@
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode",
   	"onCreateCommand" : "echo PS1='\"$ \"' >> ~/.bashrc", //Set Terminal Prompt to $
+	"customizations": {
+	    "codespaces": {
+	      "repositories": {
+		"LinkedInLearning/beginner-s-guide-to-go-protocol-buffer-typescript-4378006": {
+		  "permissions": "write-all"
+		}, 
+		"LinkedInLearning/beginner-s-guide-to-go-protocol-buffer-go-4378006": {
+		  "permissions": "write-all"
+		}, 
+		"LinkedInLearning/beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006": {
+		  "permissions": "write-all"
+		}
+	     }
+	   }
+	}	
 }
