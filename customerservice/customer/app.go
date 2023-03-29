@@ -7,13 +7,20 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+
+	cs "github.com/LinkedInLearning/beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/character"
 )
 
 type App struct {
-	DB *sql.DB
+	DB     *sql.DB
+	client cs.CharacterServiceClient
 }
 
 type Character struct {
@@ -32,11 +39,29 @@ func (a *App) Initialize() {
 	}
 
 	a.DB = db
-
+	a.client = InitializeCharacterClient()
 	http.HandleFunc("/signup", a.signup)
 	http.HandleFunc("/login", a.login)
 	http.HandleFunc("/characters", a.getCharacters)
 	http.HandleFunc("/characters/", a.getCharacterById)
+	http.HandleFunc("/charactersrpc", a.getCharactersRPC)
+	http.HandleFunc("/charactersrpc/", a.getCharacterByIdRPC)
+}
+
+func InitializeCharacterClient() cs.CharacterServiceClient {
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	fmt.Println("Dialing characterservice grpc at localhost:9008")
+	conn, err := grpc.Dial("localhost:9008", opts...)
+	if err != nil {
+		log.Fatalf("failed to dial: %v", err)
+	}
+
+	fmt.Println("Connection established")
+	client := cs.NewCharacterServiceClient(conn)
+
+	return client
 }
 
 func (a *App) Run() {
@@ -128,6 +153,28 @@ func (a *App) getCharacterById(w http.ResponseWriter, r *http.Request) {
 	err3 := json.Unmarshal(body, &character)
 	if err3 != nil {
 		respondWithError(w, http.StatusBadRequest, "Failed to unmarshal rpc")
+	}
+
+	respondWithJSON(w, http.StatusOK, character)
+}
+
+func (a *App) getCharactersRPC(w http.ResponseWriter, r *http.Request) {
+	characters, err := RpcGetCharacters(a.client)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, err.Error())
+	}
+
+	respondWithJSON(w, http.StatusOK, characters)
+}
+
+func (a *App) getCharacterByIdRPC(w http.ResponseWriter, r *http.Request) {
+	id := strings.TrimPrefix(r.URL.Path, "/charactersrpc/")
+	characterId, _ := strconv.Atoi(id)
+	fmt.Printf("characterId: %d", characterId)
+
+	character, err := RpcGetCharacterById(a.client, characterId)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, err.Error())
 	}
 
 	respondWithJSON(w, http.StatusOK, character)
