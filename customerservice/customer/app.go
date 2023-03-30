@@ -76,11 +76,11 @@ func (a *App) signup(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &c)
 	log.Printf("Customer: %+v\n", c)
 
-	if c.existingUser(a.DB) {
+	if ExistingUser(a.DB, &c) {
 		respondWithError(w, http.StatusUnauthorized, "User already exists, unable to create your account.")
 		return
 	} else {
-		if err := c.signup(a.DB); err != nil {
+		if err := Signup(a.DB, &c); err != nil {
 			log.Printf("signup failed with error: %s\n", err.Error())
 			respondWithError(w, http.StatusInternalServerError, err.Error())
 			return
@@ -97,7 +97,7 @@ func (a *App) login(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &c)
 	log.Printf("Customer: %+v\n", c)
 
-	loginSuccess, err := c.login(a.DB)
+	loginSuccess, err := Login(a.DB, &c)
 	if err != nil {
 		respondWithError(w, http.StatusNotFound, "Can't find user "+c.Username)
 	}
