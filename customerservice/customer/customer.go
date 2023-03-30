@@ -12,7 +12,7 @@ type Customer struct {
 	Email    string `json:"email"`
 }
 
-func (c *Customer) existingUser(db *sql.DB) bool {
+func ExistingUser(db *sql.DB, c *Customer) bool {
 	var existingUsername string
 	var existingEmail string
 
@@ -28,7 +28,7 @@ func (c *Customer) existingUser(db *sql.DB) bool {
 	}
 }
 
-func (c *Customer) login(db *sql.DB) (bool, error) {
+func Login(db *sql.DB, c *Customer) (bool, error) {
 	var dbPassword string
 	var dbId int
 
@@ -48,7 +48,7 @@ func (c *Customer) login(db *sql.DB) (bool, error) {
 	return true, nil
 }
 
-func (c *Customer) signup(db *sql.DB) error {
+func Signup(db *sql.DB, c *Customer) error {
 	res, err := db.Exec("INSERT INTO customers(username, password, email) VALUES(?, ?, ?)", c.Username, c.Passwd, c.Email)
 
 	if err != nil {

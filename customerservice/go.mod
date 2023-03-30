@@ -23,3 +23,5 @@ replace example.com/customer => ./customer
 replace github.com/LinkedInLearning/beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/character => ../../beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/character
 
 replace github.com/LinkedInLearning/beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/header => ../../beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/header
+
+replace github.com/LinkedInLearning/beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/product => ../../beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/product
