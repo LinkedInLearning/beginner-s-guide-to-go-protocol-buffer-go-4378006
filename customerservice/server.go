@@ -31,7 +31,7 @@ func newServer() *CustomerServer {
 	return s
 }
 
-func (cs *CustomerServer) Signin(ctx context.Context, request *pb.SigninRequest) (*pb.SigninResponse, error) {
+func (cs *CustomerServer) Sigin(ctx context.Context, request *pb.SigninRequest) (*pb.SigninResponse, error) {
 	log.Println("gRPC CustomerServer Signup")
 
 	customer := request.GetCustomer()
@@ -62,7 +62,7 @@ func (cs *CustomerServer) Signin(ctx context.Context, request *pb.SigninRequest)
 	}, nil
 }
 
-func (cs *CustomerServer) login(ctx context.Context, request *pb.LoginRequest) (*pb.LoginResponse, error) {
+func (cs *CustomerServer) Login(ctx context.Context, request *pb.LoginRequest) (*pb.LoginResponse, error) {
 	log.Println("gRPC CustomerServer Login")
 
 	customer := request.GetCustomer()
