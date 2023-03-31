@@ -7,7 +7,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "github.com/LinkedInLearning/beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/product"
+	pb "github.com/LinkedInLearning/beginner-s-guide-to-go-Proto-protocol-buffer-go-4378006/go/customer"
 )
 
 func main() {
@@ -25,4 +25,4 @@ func main() {
 	pb.RegisterCustomerServiceServer(grpcServer, newServer())
 	fmt.Println("gRPC Server started and listening on port :9006")
 	grpcServer.Serve(lis)
-}
+} 
